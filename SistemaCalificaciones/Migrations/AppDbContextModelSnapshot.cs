@@ -71,7 +71,6 @@ namespace SistemaCalificaciones.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalCalificacion")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
 

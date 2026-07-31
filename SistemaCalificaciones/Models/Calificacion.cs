@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaCalificaciones.Models
 {
@@ -7,7 +6,6 @@ namespace SistemaCalificaciones.Models
     {
         public int Id { get; set; }
 
-        // Relaciones con otras tablas
         [Range(1, int.MaxValue, ErrorMessage = "Debe indicar un EstudianteId válido.")]
         public int EstudianteId { get; set; }
 
@@ -20,7 +18,6 @@ namespace SistemaCalificaciones.Models
         [Range(1, int.MaxValue, ErrorMessage = "Debe indicar un TipoEvaluacionId válido.")]
         public int TipoEvaluacionId { get; set; }
 
-        // Las cuatro calificaciones parciales
         [Range(0, 100, ErrorMessage = "La Calificación 1 debe estar entre 0 y 100.")]
         public decimal Calificacion1 { get; set; }
 
@@ -36,21 +33,20 @@ namespace SistemaCalificaciones.Models
         [Range(0, 100, ErrorMessage = "El Examen debe estar entre 0 y 100.")]
         public decimal Examen { get; set; }
 
-        // Campos calculados automáticamente - no los envía el cliente
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal TotalCalificacion { get; private set; }
+        // Campos calculados automáticamente
+        // El cliente nunca los envía, el sistema los calcula
+        public decimal TotalCalificacion { get; set; }
+        public string Clasificacion { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
 
-        public string Clasificacion { get; private set; } = string.Empty;
-        public string Estado { get; private set; } = string.Empty;
-
-        // Método que calcula automáticamente los campos derivados
+        // Método que calcula automáticamente los tres campos anteriores
         public void CalcularResultados()
         {
             // Fórmula: 70% del promedio de las 4 notas + 30% del examen
             decimal promedioParciales = (Calificacion1 + Calificacion2 + Calificacion3 + Calificacion4) / 4;
             TotalCalificacion = Math.Round((promedioParciales * 0.70m) + (Examen * 0.30m), 2);
 
-            // Clasificación según el total
+            // Clasificación según el total obtenido
             if (TotalCalificacion >= 90)
                 Clasificacion = "A - Excelente";
             else if (TotalCalificacion >= 80)

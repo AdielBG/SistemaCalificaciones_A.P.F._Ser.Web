@@ -12,7 +12,7 @@ using SistemaCalificaciones.Data;
 namespace SistemaCalificaciones.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260726153548_Inicial")]
+    [Migration("20260727232324_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -74,7 +74,6 @@ namespace SistemaCalificaciones.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalCalificacion")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
 
